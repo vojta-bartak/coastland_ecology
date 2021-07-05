@@ -5,6 +5,20 @@ library(lwgeom)
 library(smoothr)
 library(sfdct)
 
+linear_buffer <- function(pnt, mdln, dist, bndr, width=500){
+  pnt %>% 
+    
+    # snap points
+    st_nearest_points(mdln) %>%
+    st_endpoint() %>%
+    
+    # buffer
+    st_buffer(dist) %>%
+    st_intersection(mdln) %>%
+    st_buffer(width, endCapStyle = "FLAT") %>%
+    st_intersection(bndr %>% st_union())
+}
+
 # inputs
 bnd <- read_sf("CoastaLandEcol/boundary.shp")
 mdln <- read_sf("CoastaLandEcol/SmoothLine2.shp")
