@@ -13,7 +13,7 @@ pnt <- read_sf("data/Allplotindici_3003.shp") %>%
   st_transform(3035)
 pntid <- "NAME"
 buffer_distance <- 100
-out_file <- paste("indices", buffer_distance, sep="_")
+out_file <- paste("data/indices", buffer_distance, sep="_")
 
 # study areas --------------------------------------------------------------------------------
 bndr300 <- coast %>% 
@@ -161,9 +161,9 @@ pnt <- pnt %>%
 # Saving as table ----------------------------------------------------------------------------
 pnt %>%
   st_drop_geometry() %>%
-  write.table(paste("data/", out_file, ".csv", sep=""), row.names = F, sep=";")
+  write.table(paste(out_file, "csv", sep="."), row.names = F, sep=";")
 
 # Saving as shapefile ------------------------------------------------------------------------
 pnt %>%
-  st_write(paste("data/", out_file, ".shp", sep=""))
+  st_write(paste(out_file, "shp", sep="."))
 
