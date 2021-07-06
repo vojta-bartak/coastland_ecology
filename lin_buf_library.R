@@ -31,10 +31,10 @@ clean_polygons <- function(polygons, thres=1){
         st_multipolygon()
       return(mpol)
     }) %>%
-    #"[["(1) %>%
     st_as_sfc(crs = crs) %>%
     st_as_sf()
 }
+
 
 ## Create a geometry column of linear buffers
 linear_buffer <- function(pnt, mdln, dist, bndr, width=500){
