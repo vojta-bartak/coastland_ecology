@@ -1,7 +1,6 @@
 library(sf)
 library(tmap)
 library(dplyr)
-library(purrr)
 library(nngeo)
 library(tidyr)
 
