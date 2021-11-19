@@ -20,12 +20,12 @@ linear_buffer <- function(pnt, mdln, dist, bndr, width=500){
 }
 
 # inputs
-bnd <- read_sf("CoastaLandEcol/boundary.shp")
-mdln <- read_sf("CoastaLandEcol/SmoothLine2.shp")
-pnt <- read_sf("CoastaLandEcol/test_point.shp")
+bnd <- read_sf("GIS/boundary.shp")
+mdln <- read_sf("GIS/SmoothLine2.shp")
+pnt <- read_sf("GIS/test_point.shp")
 pntid <- "FID_XYplot"
 width <- 500
-lc <- read_sf("CoastaLandEcol/LandCoverLazio_2008.shp")
+lc <- read_sf("GIS/LandCoverLazio_2008.shp")
 lcfld <- "Codice"
 
 # vizualize

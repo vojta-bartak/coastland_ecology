@@ -3,6 +3,8 @@ library(tmap)
 library(dplyr)
 library(nngeo)
 library(tidyr)
+library(smoothr)
+library(lwgeom)
 
 # input data and parameters ------------------------------------------------------------------
 coast <- read_sf("data/coastline.shp")
@@ -17,12 +19,12 @@ out_file <- paste("data/indices", buffer_distance, sep="_")
 # study areas --------------------------------------------------------------------------------
 bndr300 <- coast %>% 
   st_buffer(300) %>% 
-  st_intersection(lc %>% st_union()) %>% 
+  st_intersection(lc %>% st_make_valid() %>% st_union()) %>% 
   st_remove_holes() %>%
   st_union()
 bndr400 <- coast %>% 
   st_buffer(400) %>% 
-  st_intersection(lc %>% st_union()) %>% 
+  st_intersection(lc %>% st_make_valid() %>% st_union()) %>% 
   st_remove_holes() %>%
   st_union() 
 
@@ -32,13 +34,15 @@ middle300 <- coast %>%
   st_union() %>%
   st_cast("MULTILINESTRING") %>%
   st_intersection(bndr300) %>%
-  st_union()
+  st_union() %>%
+  smooth(method = "ksmooth", "smoothness" = 100)
 middle400 <- coast %>%
   st_buffer(200) %>%
   st_union() %>%
   st_cast("MULTILINESTRING") %>%
   st_intersection(bndr400) %>%
-  st_union()
+  st_union() %>%
+  smooth(method = "ksmooth", "smoothness" = 100)
 
 # visualizing --------------------------------------------------------------------------------
 tmap_mode("view")
@@ -60,7 +64,8 @@ linear_buffer <- function(pnt, mdln, dist, bndr, width=500){
     st_buffer(dist) %>%
     st_intersection(mdln) %>%
     st_buffer(width, endCapStyle = "FLAT") %>%
-    st_intersection(bndr %>% st_union())
+    st_intersection(bndr %>% st_union()) %>%
+    st_cast("POLYGON")
 }
 
 # linear buffers computation -----------------------------------------------------------------
